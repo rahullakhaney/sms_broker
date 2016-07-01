@@ -35,6 +35,24 @@ module SmsBroker
       response
     end
 
+    def valid?
+      schema = {
+        message: Compel.string.required.max_length(140),
+        to: Compel.string.required
+      }
+
+      object = {
+        message: @message_text,
+        to: @message_to
+      }
+
+      result = Compel.hash.keys(schema).validate(object)
+
+      @errors = result.errors
+
+      result.valid?
+    end
+
     private
 
     def build_message(from = :sender_id)
@@ -56,20 +74,6 @@ module SmsBroker
       response.is_a?(Client::Response::Error) &&
         response.invalid_sender_id? &&
           !!client.sender_id
-    end
-
-    def valid?
-      schema = {
-        message: Compel.string.required.max_length(140),
-        to: Compel.string.required
-      }
-
-      result = \
-        Compel.hash.keys(schema).validate(message: @message_text, to: @message_to)
-
-      @errors = result.errors
-
-      result.valid?
     end
 
   end
