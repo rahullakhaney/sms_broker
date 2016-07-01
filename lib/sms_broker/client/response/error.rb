@@ -11,7 +11,7 @@ module SmsBroker
         def initialize(service, response, serialized = {})
           @service = service
           @response = response
-          @serialized = serialized
+          @serialized = { errors: serialized }
         end
 
         def success?
@@ -19,7 +19,7 @@ module SmsBroker
         end
 
         def invalid_sender_id?
-          (@serialized['sender_id'] || {}).include?('is invalid')
+          (@serialized[:errors]['sender_id'] || {}).include?('is invalid')
         end
 
       end

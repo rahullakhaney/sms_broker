@@ -66,11 +66,11 @@ describe SmsBroker do
 
             expect(response.success?).to eq(false)
 
-            expect(response.serialized.keys).to include('21612')
+            expect(response.serialized[:errors].keys).to include('21612')
 
             # if the code is 21612 and message includes the phone_number,
             # it means that it tried with sender_id and failed
-            expect(response.serialized['21612'][0]).to \
+            expect(response.serialized[:errors]['21612'][0]).to \
               include("From' phone number: #{ENV['TWILIO_PHONE_NUMBER']}")
           end
 
@@ -94,7 +94,7 @@ describe SmsBroker do
 
           response = SmsBroker.message(text_message).deliver
 
-          expect(response.serialized[:to]).to include('is required')
+          expect(response.serialized[:errors][:to]).to include('is required')
         end
 
         it 'should return error for invalid from phone' do

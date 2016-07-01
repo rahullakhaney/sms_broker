@@ -25,14 +25,14 @@ describe SmsBroker do
         response = SmsBroker.service.message(text_message).to(nil).deliver
 
         expect(response.success?).to eq(false)
-        expect(response.serialized[:to]).to include("is required")
+        expect(response.serialized[:errors][:to]).to include("is required")
       end
 
       it 'should return error for missing message' do
         response = SmsBroker.service.message(nil).to(nil).deliver
 
         expect(response.success?).to eq(false)
-        expect(response.serialized[:message]).to include("is required")
+        expect(response.serialized[:errors][:message]).to include("is required")
       end
 
       it 'should return error for invalid message' do
@@ -44,7 +44,7 @@ describe SmsBroker do
           SmsBroker.service.message(message_160).to('44123457891').deliver
 
         expect(response.success?).to eq(false)
-        expect(response.serialized[:message]).to \
+        expect(response.serialized[:errors][:message]).to \
           include("cannot have length greater than 140")
       end
 
