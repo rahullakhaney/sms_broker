@@ -4,7 +4,7 @@ module SmsBroker
 
       class TwilioError < Error
 
-        SENDER_ID_NOT_SUPPORTED = '21612'
+        SENDER_ID_NOT_SUPPORTED = '21212'
 
         def initialize(twilio_response)
           super :twilio, twilio_response, serialize(twilio_response)
