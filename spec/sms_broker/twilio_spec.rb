@@ -52,26 +52,24 @@ describe SmsBroker do
               config.default_service 'twilio'
 
               config.twilio_setup \
-                phone_number: ENV['TWILIO_PHONE_NUMBER'],
+                phone_number: '15005550001',
                 account_sid: ENV['TWILIO_ACCOUNT_SID'],
-                auth_token: ENV['TWILIO_AUTH_TOKEN'],
-                sender_id: 'NotAValidSenderId'
+                auth_token: ENV['TWILIO_AUTH_TOKEN']
             end
           end
 
           it 'should return error for invalid sender_id' do
-            response = send_message(text_message, '15005550002')
+            response = send_message(text_message, '15005550006')
 
             expect(response.service).to eq(:twilio)
 
             expect(response.success?).to eq(false)
 
-            expect(response.serialized[:errors].keys).to include('21612')
-
-            # if the code is 21612 and message includes the phone_number,
+            expect(response.serialized[:errors].keys).to include('21212')
+            # if the code is 21212 and message includes the phone_number,
             # it means that it tried with sender_id and failed
-            expect(response.serialized[:errors]['21612'][0]).to \
-              include("From' phone number: #{ENV['TWILIO_PHONE_NUMBER']}")
+            expect(response.serialized[:errors]['21212'][0]).to \
+              include("The 'From' number 15005550001 is not a valid")
           end
 
         end

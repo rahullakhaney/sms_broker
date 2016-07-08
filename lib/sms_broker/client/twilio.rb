@@ -26,7 +26,7 @@ module SmsBroker
             from: serialize_number(message[:from]),
             to: serialize_number(message[:to])
 
-          if success_response?(response)
+          if failed_response?(response)
             Response::TwilioError.new(response)
           else
             Response::TwilioSuccess.new(response)
@@ -39,7 +39,7 @@ module SmsBroker
 
       private
 
-      def success_response?(response)
+      def failed_response?(response)
         ['undelivered', 'failed'].include?(response.status)
       end
 

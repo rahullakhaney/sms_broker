@@ -16,10 +16,10 @@ SmsBroker.setup do |config|
     phone_number: 'NEXMO_PHONE_NUMBER'
 
   config.twilio_setup \
-    auth_token: 'TWILIO_LIVE_AUTH_TOKEN',
-    account_sid: 'TWILIO_LIVE_ACCOUNT_SID',
-    sender_id: 'TWILIO_LIVE_SENDER_ID',
-    phone_number: 'TWILIO_LIVE_PHONE_NUMBER'
+    auth_token: 'TWILIO_AUTH_TOKEN',
+    account_sid: 'TWILIO_ACCOUNT_SID',
+    sender_id: 'TWILIO_SENDER_ID',
+    phone_number: 'TWILIO_PHONE_NUMBER'
 end
 ```
 
@@ -29,7 +29,7 @@ message = SmsBroker.message('Get paid doing small tasks!').to('441234567890')
 
 if message.valid?
   response = message.deliver
-  
+
   # response.success?
   # response.serialized
 end

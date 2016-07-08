@@ -15,7 +15,7 @@ module SmsBroker
       end
 
       def serialize_number(number)
-        "#{number}".dup.gsub(/\+/, '')
+        "#{number}".delete("+")
       end
 
     end
