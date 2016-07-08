@@ -44,7 +44,7 @@ SmsBroker.service(:twilio).message('Get paid doing small tasks!').to('4412345678
 
 Add this line to your application's Gemfile:
 
-    gem 'sms_broker', github: 'Streetbees/sms_broker'
+    gem 'sms_broker'
 
 And then execute:
 
