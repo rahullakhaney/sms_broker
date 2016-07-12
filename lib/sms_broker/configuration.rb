@@ -37,7 +37,7 @@ module SmsBroker
 
       unless setup.valid?
         exception = \
-          Exceptions::InvalidSetup.new('setup is invalid, check exception.errors')
+          Exceptions::InvalidSetup.new("setup is invalid, #{setup.errors}")
 
         exception.errors = setup.errors
 

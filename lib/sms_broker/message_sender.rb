@@ -28,7 +28,7 @@ module SmsBroker
 
       response = client.send_message(build_message)
 
-      if should_try_again_with_phone_number?(response)
+      if should_try_with_phone_number?(response)
         return client.send_message(build_message(:phone_number))
       end
 
@@ -70,7 +70,7 @@ module SmsBroker
       }
     end
 
-    def should_try_again_with_phone_number?(response)
+    def should_try_with_phone_number?(response)
       response.is_a?(Client::Response::Error) &&
         response.invalid_sender_id? &&
           !!client.sender_id

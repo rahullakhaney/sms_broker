@@ -4,17 +4,10 @@ module SmsBroker
     class Nexmo < Base
 
       def initialize(options)
-        nexmo_options = options.dup
+        client = \
+          ::Nexmo::Client.new(key: options[:key], secret: options[:secret])
 
-        auth_options = {
-          key:    nexmo_options.delete(:key),
-          secret: nexmo_options.delete(:secret)
-        }
-
-        @sender_id = nexmo_options.delete(:sender_id)
-        @phone_number = nexmo_options.delete(:phone_number)
-
-        super(:nexmo, ::Nexmo::Client.new(auth_options))
+        super :nexmo, client, options
       end
 
       def send_message(message)

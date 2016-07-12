@@ -19,7 +19,7 @@ module SmsBroker
         end
 
         def invalid_sender_id?
-          (@serialized[:errors]['sender_id'] || {}).include?('is invalid')
+          (@serialized[:errors]['sender_id'] || []).include?('is invalid')
         end
 
       end

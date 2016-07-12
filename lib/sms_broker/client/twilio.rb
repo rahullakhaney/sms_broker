@@ -4,19 +4,10 @@ module SmsBroker
     class Twilio < Base
 
       def initialize(options)
-        twilio_options = options.dup
+        client = \
+          ::Twilio::REST::Client.new(options[:account_sid], options[:auth_token])
 
-        auth_options = {
-          account_sid: twilio_options.delete(:account_sid),
-          auth_token:  twilio_options.delete(:auth_token)
-        }
-
-        @sender_id = twilio_options.delete(:sender_id)
-        @phone_number = twilio_options.delete(:phone_number)
-
-        super \
-          :twilio,
-          ::Twilio::REST::Client.new(auth_options[:account_sid], auth_options[:auth_token])
+        super :Twilio, client, options
       end
 
       def send_message(message)
@@ -26,10 +17,10 @@ module SmsBroker
             from: serialize_number(message[:from]),
             to: serialize_number(message[:to])
 
-          if failed_response?(response)
-            Response::TwilioError.new(response)
-          else
+          if success_response?(response)
             Response::TwilioSuccess.new(response)
+          else
+            Response::TwilioError.new(response)
           end
 
         rescue ::Twilio::REST::RequestError => exception
@@ -39,8 +30,8 @@ module SmsBroker
 
       private
 
-      def failed_response?(response)
-        ['undelivered', 'failed'].include?(response.status)
+      def success_response?(response)
+        !['undelivered', 'failed'].include?(response.status)
       end
 
     end
