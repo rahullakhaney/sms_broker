@@ -1,9 +1,7 @@
 module SmsBroker
   module Client
     module Response
-
       class NexmoError < Error
-
         SENDER_ID_NOT_SUPPORTED = '15'
 
         def initialize(nexmo_response)
@@ -27,9 +25,7 @@ module SmsBroker
 
           errors
         end
-
       end
-
     end
   end
 end

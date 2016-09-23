@@ -1,7 +1,5 @@
 module SmsBroker
-
   class Setup
-
     attr_reader :options,
                 :errors
 
@@ -76,7 +74,5 @@ module SmsBroker
         super
       end
     end
-
   end
-
 end

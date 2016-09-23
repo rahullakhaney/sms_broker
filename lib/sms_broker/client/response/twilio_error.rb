@@ -1,9 +1,7 @@
 module SmsBroker
   module Client
     module Response
-
       class TwilioError < Error
-
         SENDER_ID_NOT_SUPPORTED = '21212'
 
         def initialize(twilio_response)
@@ -43,9 +41,7 @@ module SmsBroker
 
           errors
         end
-
       end
-
     end
   end
 end

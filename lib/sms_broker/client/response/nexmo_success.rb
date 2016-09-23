@@ -1,9 +1,7 @@
 module SmsBroker
   module Client
     module Response
-
       class NexmoSuccess < Success
-
         def initialize(nexmo_response)
           super :nexmo, nexmo_response, serialize(nexmo_response)
         end
@@ -29,9 +27,7 @@ module SmsBroker
             }
           }
         end
-
       end
-
     end
   end
 end

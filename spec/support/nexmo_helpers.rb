@@ -13,14 +13,18 @@ module NexmoHelpers
       )
   end
 
-  def stub_nexmo_create_message_invalid_sender_id_request(sender_id, to, message)
-    request_body = {
+  def build_request_body(from, to, message)
+    {
       to: to,
-      from: sender_id,
+      from: from,
       text: message,
       api_key: 'api_key',
       api_secret: 'api_secret'
     }
+  end
+
+  def stub_nexmo_create_message_invalid_sender_id_request(sender_id, to, message)
+    request_body = build_request_body(sender_id, to, message)
 
     response_body = {
       'message-count' => '1',
@@ -36,13 +40,10 @@ module NexmoHelpers
   end
 
   def stub_nexmo_create_message_invalid_credentials(from, to, message)
-    request_body = {
-      to: to,
-      from: from,
-      text: message,
+    request_body = build_request_body(from, to, message)
+    request_body.merge! \
       api_key: 'invalid',
       api_secret: 'invalid'
-    }
 
     response_body = {
       'message-count' => '1',
@@ -58,13 +59,7 @@ module NexmoHelpers
   end
 
   def stub_nexmo_create_message_success(from, to, message)
-    request_body = {
-      to: to,
-      from: from,
-      text: message,
-      api_key: 'api_key',
-      api_secret: 'api_secret'
-    }
+    request_body = build_request_body(from, to, message)
 
     response_body = {
       'message-count': '1',
@@ -85,13 +80,7 @@ module NexmoHelpers
   end
 
   def stub_nexmo_create_message_unknown_error(from, to, message)
-    request_body = {
-      to: to,
-      from: from,
-      text: message,
-      api_key: 'api_key',
-      api_secret: 'api_secret'
-    }
+    request_body = build_request_body(from, to, message)
 
     response_body = {
       'message-count' => '1',

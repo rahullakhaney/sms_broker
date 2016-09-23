@@ -2,9 +2,7 @@ require 'sms_broker/setup'
 require 'sms_broker/exceptions/invalid_setup'
 
 module SmsBroker
-
   module Configuration
-
     @@configuration = nil
 
     def default_service
@@ -50,7 +48,5 @@ module SmsBroker
     end
 
     extend self
-
   end
-
 end

@@ -1,20 +1,16 @@
 require 'sms_broker/message_sender'
-
 require 'sms_broker/client/base'
 require 'sms_broker/client/nexmo'
 require 'sms_broker/client/twilio'
-
 require 'sms_broker/exceptions/invalid_service'
 
 module SmsBroker
-
   CLIENTS = {
     nexmo:  Client::Nexmo,
     twilio: Client::Twilio
   }
 
   class Service
-
     def self.get(name)
       options = service_configuration(name)
 
@@ -44,7 +40,5 @@ module SmsBroker
     def message(message)
       MessageSender.new(client).message(message)
     end
-
   end
-
 end

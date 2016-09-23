@@ -1,9 +1,7 @@
 module SmsBroker
   module Client
     module Response
-
       class TwilioSuccess < Success
-
         def initialize(twilio_response)
           super :twilio, twilio_response, serialize(twilio_response)
         end
@@ -33,9 +31,7 @@ module SmsBroker
             }
           }
         end
-
       end
-
     end
   end
 end

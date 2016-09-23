@@ -1,9 +1,7 @@
 module SmsBroker
   module Client
     module Response
-
       class Success
-
         attr_reader :raw,
                     :service,
                     :serialized
@@ -29,9 +27,7 @@ module SmsBroker
         def message_id
           serialized[:message_id]
         end
-
       end
-
     end
   end
 end
