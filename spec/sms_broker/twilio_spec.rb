@@ -69,7 +69,7 @@ describe SmsBroker do
             # if the code is 21212 and message includes the phone_number,
             # it means that it tried with sender_id and failed
             expect(response.serialized[:errors]['21212'][0]).to \
-              include("The 'From' number 15005550001 is not a valid")
+              include("The 'From' number +15005550001 is not a valid")
           end
 
         end

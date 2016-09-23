@@ -2,6 +2,9 @@ require 'pry'
 require 'yaml'
 require 'simplecov'
 require 'codeclimate-test-reporter'
+require 'sms_broker'
+require 'webmock/rspec'
+require 'support/nexmo_helpers'
 
 SimpleCov.start do
   formatter SimpleCov::Formatter::MultiFormatter.new [
@@ -17,13 +20,6 @@ YAML.load(File.read(yml_file)).each do |key, value|
   ENV[key] = value
 end
 
-require 'sms_broker'
-require 'webmock/rspec'
-
-require 'support/nexmo_helpers'
-
 RSpec.configure do |config|
-
   config.include NexmoHelpers
-
 end

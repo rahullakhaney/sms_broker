@@ -1,8 +1,6 @@
 module SmsBroker
   module Client
-
     class Base
-
       attr_reader :name,
                   :client,
                   :sender_id,
@@ -15,11 +13,11 @@ module SmsBroker
         @phone_number = options[:phone_number]
       end
 
-      def serialize_number(number)
-        "#{number}".delete("+")
+      def serialize_to_number(number)
+        return number if number.start_with?('+')
+
+        "+#{number}"
       end
-
     end
-
   end
 end

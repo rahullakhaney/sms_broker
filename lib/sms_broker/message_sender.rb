@@ -1,7 +1,5 @@
 module SmsBroker
-
   class MessageSender
-
     attr_reader :client,
                 :errors
 
@@ -56,18 +54,21 @@ module SmsBroker
     private
 
     def build_message(from = :sender_id)
-      sender = \
-        if client.sender_id && from == :sender_id
-          client.sender_id
-        else
-          client.phone_number
-        end
-
       {
         text: @message_text,
-        from: sender,
+        from: get_sender(from),
         to:   @message_to
       }
+    end
+
+    def get_sender(from)
+      if client.sender_id && from == :sender_id
+        client.sender_id
+      else
+        return client.phone_number if client.phone_number.start_with?('+')
+
+        "+#{client.phone_number}"
+      end
     end
 
     def should_try_with_phone_number?(response)
@@ -75,7 +76,5 @@ module SmsBroker
         response.invalid_sender_id? &&
           !!client.sender_id
     end
-
   end
-
 end
