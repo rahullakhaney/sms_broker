@@ -6,4 +6,5 @@ group :test do
   gem 'codeclimate-test-reporter'
   gem 'simplecov', require: false
   gem 'rack-test'
+  gem 'vcr'
 end

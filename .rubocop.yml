@@ -9,7 +9,7 @@ AllCops:
   DisplayCopNames: true
   Exclude:
     - 'vendor/**/*'
-    - 'spec/support/*'
+    - 'spec/support/*.rb'
     - '*.gemspec'
 
 Documentation:

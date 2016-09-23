@@ -1,9 +1,11 @@
 describe SmsBroker do
   context 'SmsBroker' do
     let(:text_message) { 'Hello World' }
+    let(:account_sid) { 'account_sid' }
+    let(:auth_token) { 'auth_token' }
 
     context 'Invalid data when trying to deliver' do
-      before(:all) do
+      before(:each) do
         SmsBroker.clear_setup
 
         SmsBroker.setup do |config|
@@ -11,8 +13,8 @@ describe SmsBroker do
           config.default_service 'twilio'
           config.twilio_setup \
             phone_number: '15005550001',
-            account_sid: ENV['TWILIO_ACCOUNT_SID'],
-            auth_token: ENV['TWILIO_AUTH_TOKEN']
+            account_sid: account_sid,
+            auth_token: auth_token
         end
       end
 
@@ -53,13 +55,13 @@ describe SmsBroker do
           config.services ['nexmo']
           config.default_service 'nexmo'
           config.nexmo_setup \
-            key: ENV['NEXMO_API_KEY'],
-            sender_id: ENV['NEXMO_SENDER_ID'],
-            phone_number: ENV['NEXMO_PHONE_NUMBER']
+            key: 'nexmo_api_key',
+            secret: 'nexmo_api_secret',
+            sender_id: 'nexmo_sender_id'
         end
       end
 
-      it 'should return error for missing number' do
+      it 'should return error for missing phone_number' do
         expect do
           SmsBroker.service.message(text_message).to('44123457891').deliver
         end.to raise_error SmsBroker::Exceptions::InvalidService
