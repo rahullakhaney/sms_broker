@@ -1,9 +1,6 @@
 describe SmsBroker do
-
   context 'Twilio' do
-
     context '#send_message' do
-
       let(:text_message) { 'Hello World' }
       let(:from_phone) { ENV['TWILIO_PHONE_NUMBER'] }
       let(:sender_id) { ENV['TWILIO_SENDER_ID'] }
@@ -23,7 +20,6 @@ describe SmsBroker do
       end
 
       context 'valid' do
-
         it 'should send message with success' do
           SmsBroker.setup do |config|
             config.services ['twilio']
@@ -44,7 +40,6 @@ describe SmsBroker do
         end
 
         context 'with sender_id' do
-
           before(:each) do
             SmsBroker.setup do |config|
               config.services ['twilio']
@@ -71,13 +66,10 @@ describe SmsBroker do
             expect(response.serialized[:errors]['21212'][0]).to \
               include("The 'From' number +15005550001 is not a valid")
           end
-
         end
-
       end
 
       context 'invalid' do
-
         it 'should return error for missing required data' do
           SmsBroker.setup do |config|
             config.services ['twilio']
@@ -112,11 +104,7 @@ describe SmsBroker do
           expect(response.success?).to eq(false)
           expect(response.serialized.length).to be > 0
         end
-
       end
-
     end
-
   end
-
 end

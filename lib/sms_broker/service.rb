@@ -6,9 +6,9 @@ require 'sms_broker/exceptions/invalid_service'
 
 module SmsBroker
   CLIENTS = {
-    nexmo:  Client::Nexmo,
+    nexmo: Client::Nexmo,
     twilio: Client::Twilio
-  }
+  }.freeze
 
   class Service
     def self.get(name)
@@ -17,7 +17,7 @@ module SmsBroker
       result = Service.validate(name, options)
 
       unless result.valid?
-        raise Exceptions::InvalidService, { name.to_sym => result.errors }
+        raise Exceptions::InvalidService, name.to_sym => result.errors
       end
 
       new CLIENTS[name.to_sym].new(options)

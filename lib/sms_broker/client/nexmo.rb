@@ -26,7 +26,7 @@ module SmsBroker
       def success_response?(response)
         # just looking for the first message,
         # right now only one message per call
-        response['messages'].length > 0 && response['messages'][0]['status'] == '0'
+        !response['messages'].empty? && response['messages'][0]['status'] == '0'
       end
     end
   end

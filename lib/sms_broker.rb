@@ -9,6 +9,8 @@ require 'sms_broker/service'
 module SmsBroker
   extend Configuration
 
+  module_function
+
   def service(name = default_service)
     Service.get(name)
   end
@@ -16,6 +18,4 @@ module SmsBroker
   def message(body)
     service.message(body)
   end
-
-  extend self
 end

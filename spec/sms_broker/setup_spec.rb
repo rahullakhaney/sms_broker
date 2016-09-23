@@ -1,7 +1,5 @@
 describe SmsBroker do
-
   context 'Setup' do
-
     before(:each) do
       SmsBroker.clear_setup
     end
@@ -9,7 +7,7 @@ describe SmsBroker do
     it 'should set configs' do
       setup = \
         SmsBroker.setup do |config|
-          config.services ['nexmo', 'twilio']
+          config.services %w(nexmo twilio)
 
           config.default_service 'nexmo'
 
@@ -27,7 +25,7 @@ describe SmsBroker do
       expect(setup.valid?).to eq(true)
 
       expect(setup.options[:services]).to \
-        eq(['nexmo', 'twilio'])
+        eq(%w(nexmo twilio))
 
       expect(setup.options[:default_service]).to \
         eq('nexmo')
@@ -46,13 +44,10 @@ describe SmsBroker do
     end
 
     context 'valid configs' do
-
       before(:each) do
         SmsBroker.setup do |config|
-          config.services ['nexmo', 'twilio']
-
+          config.services %w(nexmo twilio)
           config.default_service 'nexmo'
-
           config.nexmo_setup \
             key: 'NEXMO_API_KEY',
             phone_number: 'phone',
@@ -76,15 +71,12 @@ describe SmsBroker do
 
         expect(service.client).to be_a SmsBroker::Client::Twilio
       end
-
     end
 
     context 'invalid configs' do
-
       it 'should return error about available services' do
         setup = SmsBroker.setup do |config|
-          config.services ['nexmo', 'twilio']
-
+          config.services %w(nexmo twilio)
           config.default_service 'nexmo'
         end
 
@@ -108,43 +100,38 @@ describe SmsBroker do
 
       it 'should return error default_service' do
         setup = SmsBroker.setup do |config|
-          config.services ['nexmo', 'twilio']
-
+          config.services %w(nexmo twilio)
           config.default_service 'nope'
         end
 
         expect(setup.valid?).to eq(false)
 
         expect(setup.errors[:default_service]).to \
-          include("must be within [\"nexmo\", \"twilio\"]")
+          include('must be within ["nexmo", "twilio"]')
       end
 
       context 'setup!' do
-
         it 'should raise exception for invalid setup' do
-          expect {
+          expect do
             SmsBroker.setup! do |config|
-              config.services ['nexmo', 'twilio']
+              config.services %w(nexmo twilio)
               config.default_service 'nope'
             end
-          }.to raise_error(SmsBroker::Exceptions::InvalidSetup)
+          end.to raise_error(SmsBroker::Exceptions::InvalidSetup)
         end
 
         it 'should return error for missing required service setup' do
-          expect {
+          expect do
             SmsBroker.setup! do |config|
               config.default_service 'nexmo'
 
               config.nexmo_setup \
                 not_exists: 'key'
             end
-          }.to raise_error(SmsBroker::Exceptions::InvalidSetup)
+          end.to raise_error(SmsBroker::Exceptions::InvalidSetup)
         end
-
       end
-
     end
-
   end
 
   it 'should respond_to :message' do
@@ -154,8 +141,7 @@ describe SmsBroker do
   it 'should raise InvalidSetup for service not being setup' do
     SmsBroker.clear_setup
 
-    expect{ SmsBroker::Service.get(:twilio) }.to \
+    expect { SmsBroker::Service.get(:twilio) }.to \
       raise_error SmsBroker::Exceptions::InvalidSetup
   end
-
 end

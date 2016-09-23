@@ -5,7 +5,7 @@ describe SmsBroker do
     context 'Valid real calls' do
       before(:all) do
         unless ENV['REAL_PHONE_NUMBER']
-          skip "REAL_PHONE_NUMBER env var is required to run this spec"
+          skip 'REAL_PHONE_NUMBER env var is required to run this spec'
         end
 
         WebMock.allow_net_connect!
@@ -13,7 +13,7 @@ describe SmsBroker do
         SmsBroker.clear_setup
 
         SmsBroker.setup do |config|
-          config.services ['nexmo', 'twilio']
+          config.services %w(nexmo twilio)
 
           config.default_service 'nexmo'
 
@@ -36,18 +36,25 @@ describe SmsBroker do
       end
 
       context 'Nexmo' do
-        it "should successfuly send message" do
+        it 'should successfuly send message' do
           message = \
-            SmsBroker.service(:nexmo).message(text_message).to(ENV['REAL_PHONE_NUMBER'])
+            SmsBroker
+              .service(:nexmo)
+              .message(text_message)
+              .to(ENV['REAL_PHONE_NUMBER'])
 
           expect(message.deliver.success?).to eq true
         end
       end
 
       context 'Twillio' do
-        it "should successfuly send message" do
+        it 'should successfuly send message' do
           message = \
-            SmsBroker.service(:twilio).message(text_message).to(ENV['REAL_PHONE_NUMBER'])
+            SmsBroker
+              .service(:twilio)
+              .message(text_message)
+              .to(ENV['REAL_PHONE_NUMBER'])
+
           expect(message.deliver.success?).to eq true
         end
       end

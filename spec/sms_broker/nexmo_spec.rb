@@ -7,7 +7,7 @@ describe SmsBroker do
       let(:to_phone) { '+447491234567' }
       let(:api_secret) { 'api_secret' }
       let(:api_key) { 'api_key' }
-      
+
       before(:each) do
         SmsBroker.clear_setup
       end
@@ -31,8 +31,9 @@ describe SmsBroker do
           expect(response.message_id).not_to eq(nil)
         end
 
-        it 'should return error for invalid sender_id and fallback to phone_number' do
-           SmsBroker.setup do |config|
+        it 'should return error for invalid sender_id and fallback to ' \
+           'phone_number' do
+          SmsBroker.setup do |config|
             config.nexmo_setup \
               phone_number: from_phone,
               sender_id: sender_id,

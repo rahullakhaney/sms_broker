@@ -74,7 +74,7 @@ module SmsBroker
     def should_try_with_phone_number?(response)
       response.is_a?(Client::Response::Error) &&
         response.invalid_sender_id? &&
-          !!client.sender_id
+        client.sender_id
     end
   end
 end
