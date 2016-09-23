@@ -1,8 +1,6 @@
 module SmsBroker
   module Client
-
     class Nexmo < Base
-
       def initialize(options)
         client = \
           ::Nexmo::Client.new(key: options[:key], secret: options[:secret])
@@ -13,8 +11,8 @@ module SmsBroker
       def send_message(message)
         response = client.send_message \
           text: message[:text],
-          from: serialize_number(message[:from]),
-          to: serialize_number(message[:to])
+          from: message[:from],
+          to: serialize_to_number(message[:to])
 
         if success_response?(response)
           Response::NexmoSuccess.new(response)
@@ -28,10 +26,8 @@ module SmsBroker
       def success_response?(response)
         # just looking for the first message,
         # right now only one message per call
-        response['messages'].length > 0 && response['messages'][0]['status'] == '0'
+        !response['messages'].empty? && response['messages'][0]['status'] == '0'
       end
-
     end
-
   end
 end

@@ -1,10 +1,8 @@
 module SmsBroker
   module Client
     module Response
-
       class NexmoError < Error
-
-        SENDER_ID_NOT_SUPPORTED = '15'
+        SENDER_ID_NOT_SUPPORTED = '15'.freeze
 
         def initialize(nexmo_response)
           super :nexmo, nexmo_response, serialize_error_response(nexmo_response)
@@ -27,9 +25,7 @@ module SmsBroker
 
           errors
         end
-
       end
-
     end
   end
 end

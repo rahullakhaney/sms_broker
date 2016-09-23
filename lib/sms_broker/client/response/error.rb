@@ -1,9 +1,7 @@
 module SmsBroker
   module Client
     module Response
-
       class Error
-
         attr_reader :service,
                     :response,
                     :serialized
@@ -21,9 +19,7 @@ module SmsBroker
         def invalid_sender_id?
           (@serialized[:errors]['sender_id'] || []).include?('is invalid')
         end
-
       end
-
     end
   end
 end

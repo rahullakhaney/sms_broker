@@ -1,9 +1,7 @@
 module SmsBroker
   module Client
     module Response
-
       class NexmoSuccess < Success
-
         def initialize(nexmo_response)
           super :nexmo, nexmo_response, serialize(nexmo_response)
         end
@@ -17,21 +15,23 @@ module SmsBroker
             to: single_response['to'],
             from: single_response['from'],
             message_id: single_response['message-id'],
-            raw: {
-              to: single_response['to'],
-              from: single_response['from'],
-              status: single_response['status'],
-              network: single_response['network'],
-              message_id: single_response['message-id'],
-              client_ref: single_response['client-ref'],
-              remaining_balance: single_response['remaining-balance'],
-              message_price: single_response['message-price']
-            }
+            raw: response_to_hash(single_response)
           }
         end
 
-      end
+        def response_to_hash(response)
+          attributes = %w(
+            to from status network message-id client-ref
+            remaining-balance message-price
+          )
 
+          {}.tap do |hash|
+            attributes.each do |attr|
+              hash[attr.tr('-', '_').to_sym] = response[attr]
+            end
+          end
+        end
+      end
     end
   end
 end

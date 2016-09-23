@@ -2,36 +2,36 @@ require 'sms_broker/setup'
 require 'sms_broker/exceptions/invalid_setup'
 
 module SmsBroker
-
   module Configuration
+    extend self
 
-    @@configuration = nil
+    @configuration = nil
 
     def default_service
       configuration[:default_service]
     end
 
     def clear_setup
-      @@configuration = nil
+      @configuration = nil
     end
 
     def configuration
       exception = \
         Exceptions::InvalidSetup.new('setup does not exists')
 
-      @@configuration || (raise exception)
+      @configuration || (raise exception)
     end
 
-    def setup(&block)
+    def setup
       setup = Setup.new
       yield setup if block_given?
 
-      @@configuration = setup.options
+      @configuration = setup.options
 
       setup
     end
 
-    def setup!(&block)
+    def setup!
       setup = Setup.new
       yield setup if block_given?
 
@@ -44,13 +44,9 @@ module SmsBroker
         raise exception
       end
 
-      @@configuration = setup.options
+      @configuration = setup.options
 
       setup
     end
-
-    extend self
-
   end
-
 end

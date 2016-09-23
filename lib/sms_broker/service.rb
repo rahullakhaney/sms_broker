@@ -1,27 +1,23 @@
 require 'sms_broker/message_sender'
-
 require 'sms_broker/client/base'
 require 'sms_broker/client/nexmo'
 require 'sms_broker/client/twilio'
-
 require 'sms_broker/exceptions/invalid_service'
 
 module SmsBroker
-
   CLIENTS = {
-    nexmo:  Client::Nexmo,
+    nexmo: Client::Nexmo,
     twilio: Client::Twilio
-  }
+  }.freeze
 
   class Service
-
     def self.get(name)
       options = service_configuration(name)
 
       result = Service.validate(name, options)
 
       unless result.valid?
-        raise Exceptions::InvalidService, { name.to_sym => result.errors }
+        raise Exceptions::InvalidService, name.to_sym => result.errors
       end
 
       new CLIENTS[name.to_sym].new(options)
@@ -44,7 +40,5 @@ module SmsBroker
     def message(message)
       MessageSender.new(client).message(message)
     end
-
   end
-
 end
