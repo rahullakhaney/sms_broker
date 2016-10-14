@@ -1,6 +1,7 @@
 describe SmsBroker do
   context 'SmsBroker' do
     let(:text_message) { 'Hello World' }
+    let(:voice_text_message) { 'Alex,, please give me a raise,, please!' }
 
     context 'Valid real calls' do
       before(:all) do
@@ -44,6 +45,18 @@ describe SmsBroker do
               .to(ENV['REAL_PHONE_NUMBER'])
 
           expect(message.deliver.success?).to eq true
+        end
+      end
+
+      context 'Nexmo voice call', :real_deal do
+        it 'should successfuly send the voice message' do
+          voice_message = \
+            SmsBroker
+              .service(:nexmo)
+              .voice_message(voice_text_message)
+              .to(ENV['REAL_PHONE_NUMBER'])
+
+          expect(voice_message.deliver.success?).to eq true
         end
       end
 

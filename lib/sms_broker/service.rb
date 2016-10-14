@@ -1,4 +1,5 @@
 require 'sms_broker/message_sender'
+require 'sms_broker/voice_message_sender'
 require 'sms_broker/client/base'
 require 'sms_broker/client/nexmo'
 require 'sms_broker/client/twilio'
@@ -39,6 +40,10 @@ module SmsBroker
 
     def message(message)
       MessageSender.new(client).message(message)
+    end
+
+    def voice_message(message) #could have another params like lang
+      VoiceMessageSender.new(client).message(message)
     end
   end
 end
