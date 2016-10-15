@@ -146,4 +146,17 @@ module NexmoHelpers
 
     stub_nexmo_create_voice_message(request_body, response_body)
   end
+
+  def stub_nexmo_create_voice_message_unknown_error(from, to, message)
+    request_body = build_voice_request_body(from, to, message)
+
+    response_body = {
+      'call_id': '1',
+      'to': to,
+      'status': '5',
+      'error_text': 'An error has occurred in the Nexmo platform while processing this request'
+    }
+
+    stub_nexmo_create_voice_message(request_body, response_body)
+  end
 end

@@ -52,7 +52,7 @@ describe SmsBroker do
           expect(response.serialized.length).to be > 0
         end
 
-        xit 'should return error an unknown error' do
+        it 'should return error an unknown error' do
           SmsBroker.setup do |config|
             config.nexmo_setup \
               phone_number: from_phone,
@@ -60,7 +60,7 @@ describe SmsBroker do
               key: api_key
           end
 
-          stub_nexmo_create_message_unknown_error \
+          stub_nexmo_create_voice_message_unknown_error \
             from_phone, to_phone, voice_message
 
           response = SmsBroker.voice_message(voice_message).to(to_phone).deliver

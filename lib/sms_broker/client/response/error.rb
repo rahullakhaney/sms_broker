@@ -26,3 +26,4 @@ end
 
 require 'sms_broker/client/response/nexmo_error'
 require 'sms_broker/client/response/twilio_error'
+require 'sms_broker/client/response/nexmo_voice_error'
