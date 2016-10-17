@@ -6,6 +6,7 @@ describe SmsBroker do
       let(:voice_message) { 'Hello World' }
       let(:from_phone) { '+447476543210' }
       let(:sender_id) { 'SenderID' }
+      let(:lang) { 'en-GB' }
       let(:to_phone) { '+447491234567' }
       let(:api_secret) { 'api_secret' }
       let(:api_key) { 'api_key' }
@@ -24,9 +25,13 @@ describe SmsBroker do
               key: api_key
           end
 
-          stub_nexmo_create_voice_message_success(sender_id, to_phone, voice_message)
+          stub_nexmo_create_voice_message_success(sender_id, to_phone, voice_message, lang)
 
-          response = SmsBroker.voice_message(voice_message).to(to_phone).deliver
+          response = SmsBroker
+            .voice_message(voice_message)
+            .to(to_phone)
+            .with(lang: lang)
+            .deliver
 
           expect(response.service).to eq(:nexmo)
           expect(response.success?).to eq(true)
@@ -64,6 +69,27 @@ describe SmsBroker do
             from_phone, to_phone, voice_message
 
           response = SmsBroker.voice_message(voice_message).to(to_phone).deliver
+
+          expect(response.success?).to eq(false)
+          expect(response.serialized.length).to be > 0
+        end
+
+        it 'should return error an invalid language' do
+          SmsBroker.setup do |config|
+            config.nexmo_setup \
+              phone_number: from_phone,
+              secret: api_secret,
+              key: api_key
+          end
+
+          stub_nexmo_create_voice_message_unknown_error \
+            from_phone, to_phone, voice_message
+
+          response = SmsBroker
+            .voice_message(voice_message)
+            .to(to_phone)
+            .with(lang: 'testing')
+            .deliver
 
           expect(response.success?).to eq(false)
           expect(response.serialized.length).to be > 0

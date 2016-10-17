@@ -35,15 +35,14 @@ module NexmoHelpers
     }
   end
 
-  def build_voice_request_body(from, to, message)
-    #[RRAMOS] extend this to the additional_parameters
+  def build_voice_request_body(from, to, message, lang = nil)
     {
       to: to,
       from: from,
       text: message,
       api_key: 'api_key',
       api_secret: 'api_secret'
-    }
+    }.merge(lg: lang)
   end
 
   def stub_nexmo_create_message_invalid_sender_id_request(sender_id, to, message)
@@ -118,8 +117,8 @@ module NexmoHelpers
     stub_nexmo_create_message(request_body, response_body)
   end
 
-  def stub_nexmo_create_voice_message_success(from, to, message)
-    request_body = build_voice_request_body(from, to, message)
+  def stub_nexmo_create_voice_message_success(from, to, message, lang)
+    request_body = build_voice_request_body(from, to, message, lang)
 
     response_body = {
       'call_id': '1',

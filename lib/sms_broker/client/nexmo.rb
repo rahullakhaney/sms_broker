@@ -25,7 +25,8 @@ module SmsBroker
         response = client.initiate_tts_call \
           text: message[:text],
           from:  message[:from],
-          to: serialize_to_number(message[:to])
+          to: serialize_to_number(message[:to]),
+          lg: message[:lang]
 
         if voice_success_response?(response)
           Response::NexmoVoiceSuccess.new(response)

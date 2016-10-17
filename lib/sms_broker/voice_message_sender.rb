@@ -19,6 +19,12 @@ module SmsBroker
       self
     end
 
+    def with(options)
+      @voice_message_options = options
+
+      self
+    end
+
     def deliver
       unless valid?
         return Client::Response::Error.new(client.name, errors, errors)
@@ -34,14 +40,19 @@ module SmsBroker
     end
 
     def valid?
+      #enforce the country code format on the schema
+      options = @voice_message_options || {}
+
       schema = {
         message: Compel.string.required.max_length(140),
-        to: Compel.string.required
+        to: Compel.string.required,
+        lang: Compel.string
       }
 
       object = {
         message: @voice_message_text,
-        to: @voice_message_to
+        to: @voice_message_to,
+        lang: options[:lang]
       }
 
       result = Compel.hash.keys(schema).validate(object)
@@ -54,11 +65,11 @@ module SmsBroker
     private
 
     def build_message(from = :sender_id)
-      {
-        text: @voice_message_text,
-        from: get_sender(from),
-        to:   @voice_message_to
-      }
+        {
+          text: @voice_message_text,
+          from: get_sender(from),
+          to:   @voice_message_to
+        }.merge!(@voice_message_options || {})
     end
 
     def get_sender(from)
