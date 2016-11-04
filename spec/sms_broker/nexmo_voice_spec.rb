@@ -74,7 +74,7 @@ describe SmsBroker do
           expect(response.serialized.length).to be > 0
         end
 
-        it 'should return error an invalid language' do
+        xit 'should return error an invalid language' do
           SmsBroker.setup do |config|
             config.nexmo_setup \
               phone_number: from_phone,
