@@ -1,7 +1,7 @@
 describe SmsBroker do
   context 'SmsBroker' do
     let(:text_message) { 'Hello World' }
-    let(:voice_text_message) { 'Alex,, please give me a raise,, please!' }
+    let(:voice_text_message) { 'This is a voice message test, please ignore' }
 
     context 'Valid real calls' do
       before(:all) do

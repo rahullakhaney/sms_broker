@@ -25,17 +25,8 @@ module SmsBroker
       end
 
       def send_voice_message(message)
-        response = client.messages.create \
-          body: message[:text],
-          from: message[:from],
-          to: serialize_to_number(message[:to])
-
-        return Response::TwilioSuccess.new(response) \
-          if success_response?(response)
-
-        Response::TwilioError.new(response)
-      rescue ::Twilio::REST::RequestError => exception
-        Response::TwilioError.new(exception)
+        # Not implemented yet
+        raise SmsBroker::Exceptions::InvalidService
       end
 
       private

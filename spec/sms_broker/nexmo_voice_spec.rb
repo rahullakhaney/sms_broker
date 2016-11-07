@@ -73,27 +73,6 @@ describe SmsBroker do
           expect(response.success?).to eq(false)
           expect(response.serialized.length).to be > 0
         end
-
-        xit 'should return error an invalid language' do
-          SmsBroker.setup do |config|
-            config.nexmo_setup \
-              phone_number: from_phone,
-              secret: api_secret,
-              key: api_key
-          end
-
-          stub_nexmo_create_voice_message_unknown_error \
-            from_phone, to_phone, voice_message
-
-          response = SmsBroker
-            .voice_message(voice_message)
-            .to(to_phone)
-            .with(lang: 'testing')
-            .deliver
-
-          expect(response.success?).to eq(false)
-          expect(response.serialized.length).to be > 0
-        end
       end
     end
   end
