@@ -13,6 +13,18 @@ module NexmoHelpers
       )
   end
 
+  def stub_nexmo_create_voice_message(request_body, response_body)
+    stub_request(:post, 'https://api.nexmo.com/tts/json')
+      .with(body: request_body)
+      .to_return(
+        status: 200,
+        body: response_body.to_json,
+        headers: {
+          'Content-Type' => 'application/json'
+        }
+      )
+  end
+
   def build_request_body(from, to, message)
     {
       to: to,
@@ -21,6 +33,16 @@ module NexmoHelpers
       api_key: 'api_key',
       api_secret: 'api_secret'
     }
+  end
+
+  def build_voice_request_body(from, to, message, lang = nil)
+    {
+      to: to,
+      from: from,
+      text: message,
+      api_key: 'api_key',
+      api_secret: 'api_secret'
+    }.merge(lg: lang)
   end
 
   def stub_nexmo_create_message_invalid_sender_id_request(sender_id, to, message)
@@ -93,5 +115,47 @@ module NexmoHelpers
     }
 
     stub_nexmo_create_message(request_body, response_body)
+  end
+
+  def stub_nexmo_create_voice_message_success(from, to, message, lang)
+    request_body = build_voice_request_body(from, to, message, lang)
+
+    response_body = {
+      'call_id': '1',
+      'to': to,
+      'status': '0',
+      'error_text': ''
+    }
+
+    stub_nexmo_create_voice_message(request_body, response_body)
+  end
+
+  def stub_nexmo_create_voice_message_invalid_credentials(from, to, message)
+    request_body = build_voice_request_body(from, to, message)
+    request_body.merge! \
+      api_key: 'invalid',
+      api_secret: 'invalid'
+
+    response_body = {
+      'call_id': '1',
+      'to': to,
+      'status': '4',
+      'error_text': 'Invalid credentials'
+    }
+
+    stub_nexmo_create_voice_message(request_body, response_body)
+  end
+
+  def stub_nexmo_create_voice_message_unknown_error(from, to, message)
+    request_body = build_voice_request_body(from, to, message)
+
+    response_body = {
+      'call_id': '1',
+      'to': to,
+      'status': '5',
+      'error_text': 'An error has occurred in the Nexmo platform while processing this request'
+    }
+
+    stub_nexmo_create_voice_message(request_body, response_body)
   end
 end
