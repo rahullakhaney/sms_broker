@@ -4,6 +4,7 @@ require 'sms_broker/client/base'
 require 'sms_broker/client/nexmo'
 require 'sms_broker/client/twilio'
 require 'sms_broker/exceptions/invalid_service'
+require 'sms_broker/exceptions/not_implemented'
 
 module SmsBroker
   CLIENTS = {

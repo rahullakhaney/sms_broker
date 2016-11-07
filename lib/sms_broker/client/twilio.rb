@@ -24,9 +24,12 @@ module SmsBroker
         Response::TwilioError.new(exception)
       end
 
-      def send_voice_message(message)
-        # Not implemented yet
-        raise SmsBroker::Exceptions::InvalidService
+      def send_voice_message(_message)
+        message = 'twillio voice message integration is not implemented'
+        exception = \
+          Exceptions::NotImplemented.new(message)
+
+        raise exception
       end
 
       private

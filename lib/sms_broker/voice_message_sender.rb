@@ -40,7 +40,6 @@ module SmsBroker
     end
 
     def valid?
-      #enforce the country code format on the schema
       options = @voice_message_options || {}
 
       schema = {
@@ -65,11 +64,11 @@ module SmsBroker
     private
 
     def build_message(from = :sender_id)
-        {
-          text: @voice_message_text,
-          from: get_sender(from),
-          to:   @voice_message_to
-        }.merge!(@voice_message_options || {})
+      {
+        text: @voice_message_text,
+        from: get_sender(from),
+        to:   @voice_message_to
+      }.merge!(@voice_message_options || {})
     end
 
     def get_sender(from)
