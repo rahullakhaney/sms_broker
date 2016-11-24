@@ -48,7 +48,7 @@ module SmsBroker
         to: Compel.string.required,
         lang: Compel.string,
         rate: Compel.integer,
-        repeate: Compel.integer
+        repeat: Compel.integer
       }
 
       object = {
@@ -56,7 +56,7 @@ module SmsBroker
         to: @voice_message_to,
         lang: options[:lang],
         rate: options[:rate],
-        repeate: options[:repeate]
+        repeat: options[:repeat]
       }
 
       result = Compel.hash.keys(schema).validate(object)
@@ -98,7 +98,7 @@ module SmsBroker
       return unless @voice_message_options
 
       @voice_message_options[:rate]    && inject_rate
-      @voice_message_options[:repeate] && inject_repeate
+      @voice_message_options[:repeat] && inject_repeat
     end
 
     def inject_rate
@@ -107,9 +107,9 @@ module SmsBroker
         "<prosody rate='#{rate}%'>" + @voice_message_text + '</prosody>'
     end
 
-    def inject_repeate
+    def inject_repeat
       @voice_message_text += "<break time='1s'/>"
-      @voice_message_text *= @voice_message_options[:repeate]
+      @voice_message_text *= @voice_message_options[:repeat]
     end
   end
 end

@@ -39,7 +39,7 @@ describe SmsBroker do
         end
       end
 
-      context 'with rate and repeate set', :focus do
+      context 'with rate and repeat set', :focus do
         it 'should send voice message with success' do
           SmsBroker.setup do |config|
             config.nexmo_setup \
@@ -52,7 +52,7 @@ describe SmsBroker do
           sms_broker = SmsBroker
             .voice_message(voice_message)
             .to(to_phone)
-            .with(lang: lang, rate: 20, repeate: 3)
+            .with(lang: lang, rate: 20, repeat: 3)
           sms_broker.build_message
           messages = \
             sms_broker.voice_message_text.split("<break time='1s'/>")
