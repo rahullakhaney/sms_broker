@@ -97,7 +97,7 @@ module SmsBroker
     def tag_message
       return unless @voice_message_options
 
-      @voice_message_options[:rate]    && inject_rate
+      @voice_message_options[:rate]   && inject_rate
       @voice_message_options[:repeat] && inject_repeat
     end
 
