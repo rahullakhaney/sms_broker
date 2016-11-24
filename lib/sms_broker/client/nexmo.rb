@@ -24,7 +24,7 @@ module SmsBroker
       def send_voice_message(message)
         response = client.initiate_tts_call \
           text: message[:text],
-          from:  message[:from],
+          from: message[:from],
           to: serialize_to_number(message[:to]),
           lg: message[:lang]
 
