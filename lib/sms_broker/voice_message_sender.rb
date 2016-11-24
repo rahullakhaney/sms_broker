@@ -1,7 +1,8 @@
 module SmsBroker
   class VoiceMessageSender
     attr_reader :client,
-                :errors
+                :errors,
+                :voice_message_text
 
     def initialize(client)
       @client = client
@@ -45,13 +46,17 @@ module SmsBroker
       schema = {
         message: Compel.string.required.max_length(140),
         to: Compel.string.required,
-        lang: Compel.string
+        lang: Compel.string,
+        rate: Compel.integer,
+        repeate: Compel.integer
       }
 
       object = {
         message: @voice_message_text,
         to: @voice_message_to,
-        lang: options[:lang]
+        lang: options[:lang],
+        rate: options[:rate],
+        repeate: options[:repeate]
       }
 
       result = Compel.hash.keys(schema).validate(object)
@@ -61,15 +66,17 @@ module SmsBroker
       result.valid?
     end
 
-    private
-
     def build_message(from = :sender_id)
+      client.is_a?(SmsBroker::Client::Nexmo) && tag_message
+
       {
         text: @voice_message_text,
         from: get_sender(from),
         to:   @voice_message_to
       }.merge!(@voice_message_options || {})
     end
+
+    private
 
     def get_sender(from)
       if client.sender_id && from == :sender_id
@@ -85,6 +92,24 @@ module SmsBroker
       response.is_a?(Client::Response::Error) &&
         response.invalid_sender_id? &&
         client.sender_id
+    end
+
+    def tag_message
+      return unless @voice_message_options
+
+      @voice_message_options[:rate]    && inject_rate
+      @voice_message_options[:repeate] && inject_repeate
+    end
+
+    def inject_rate
+      rate = @voice_message_options[:rate]
+      @voice_message_text = \
+        "<prosody rate='#{rate}%'>" + @voice_message_text + '</prosody>'
+    end
+
+    def inject_repeate
+      @voice_message_text += "<break time='1s'/>"
+      @voice_message_text *= @voice_message_options[:repeate]
     end
   end
 end
