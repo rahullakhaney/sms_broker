@@ -49,8 +49,6 @@ describe SmsBroker do
               key: api_key
           end
 
-          #stub_nexmo_create_voice_message_success(sender_id, to_phone, voice_message, lang)
-
           sms_broker = SmsBroker
             .voice_message(voice_message)
             .to(to_phone)
