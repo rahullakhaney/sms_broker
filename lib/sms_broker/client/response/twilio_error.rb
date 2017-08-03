@@ -2,7 +2,7 @@ module SmsBroker
   module Client
     module Response
       class TwilioError < Error
-        SENDER_ID_NOT_SUPPORTED = '21212'.freeze
+        SENDER_ID_NOT_SUPPORTED = %w(21212 21612).freeze
 
         def initialize(twilio_response)
           super :twilio, twilio_response, serialize(twilio_response)
@@ -23,7 +23,7 @@ module SmsBroker
             response.error_code.to_s => [response.error_message]
           }
 
-          if response.error_code.to_s == SENDER_ID_NOT_SUPPORTED
+          if SENDER_ID_NOT_SUPPORTED.include?(response.error_code.to_s)
             errors['sender_id'] = ['is invalid']
           end
 
@@ -35,7 +35,7 @@ module SmsBroker
             exception.code.to_s => [exception.message]
           }
 
-          if exception.code.to_s == SENDER_ID_NOT_SUPPORTED
+          if SENDER_ID_NOT_SUPPORTED.include?(exception.code.to_s)
             errors['sender_id'] = ['is invalid']
           end
 

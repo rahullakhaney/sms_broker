@@ -46,7 +46,7 @@ describe SmsBroker do
             end
           end
 
-          it 'should return error for invalid sender_id' do
+          it 'should return 21212 error for invalid sender_id' do
             VCR.use_cassette('twilio/create_invalid_phone_error') do
               response = send_message(text_message, '15005550006')
 
@@ -56,6 +56,20 @@ describe SmsBroker do
               # if the code is 21212 and message includes the phone_number,
               # it means that it tried with sender_id and failed
               expect(response.serialized[:errors]['21212'][0]).to \
+                include("The 'From' number +15005550001 is not a valid")
+            end
+          end
+
+          it 'should return 21612 error for invalid sender_id' do
+            VCR.use_cassette('twilio/create_invalid_phone_error_21612') do
+              response = send_message(text_message, '15005550006')
+
+              expect(response.service).to eq(:twilio)
+              expect(response.success?).to eq(false)
+              expect(response.serialized[:errors].keys).to include('21612')
+              # if the code is 21612 and message includes the phone_number,
+              # it means that it tried with sender_id and failed
+              expect(response.serialized[:errors]['21612'][0]).to \
                 include("The 'From' number +15005550001 is not a valid")
             end
           end
