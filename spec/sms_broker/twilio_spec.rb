@@ -67,7 +67,7 @@ describe SmsBroker do
               expect(response.service).to eq(:twilio)
               expect(response.success?).to eq(false)
               expect(response.serialized[:errors].keys).to include('21612')
-              # if the code is 21212 and message includes the phone_number,
+              # if the code is 21612 and message includes the phone_number,
               # it means that it tried with sender_id and failed
               expect(response.serialized[:errors]['21612'][0]).to \
                 include("The 'From' number +15005550001 is not a valid")
